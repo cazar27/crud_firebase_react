@@ -1,6 +1,7 @@
 <html>
 <head>
     <title>Juego Pareja de Cartas</title>
+    <link rel="stylesheet" href="bootstrap.css">
 <style type="text/css">
     body { 
         background : white;
@@ -26,19 +27,15 @@
         border-right: 0px;
         background-color: rgba(0,0,0,.03);
         box-shadow: 0 1px 6px rgba(0,0,0,.08);
-        height: 130px;
-        min-height: 60px;
-        text-align: center;
+        min-height: 5%;
+        text-align: left;
     }
 
     #tituloDentro{
-        margin: auto;
-        width: 1024px;
+        width: 100%;
         height: auto;
         position: relative;
-        font-size: 2em;
-        padding-left: 60px;
-        padding-top: 13px;
+        padding:15px;
     }
 
     #contenido{
@@ -52,12 +49,13 @@
     }
 
     #contenidoDentro{
-        margin:0 25%;
-        width: 1024px;
+        
+        width: 100%;
         height: auto;
         position: relative;
         padding: 20px;
         font-size: 2em;
+        margin: 0 auto;
     }
 
     .personaje{
@@ -67,6 +65,36 @@
         float: left;
         margin: 5px;
     }
+
+@media only screen and (max-width: 320px) {
+.personaje  {
+        width: 52px;
+        height: 80px;
+        background-color: #E1E1E1;
+        float: left;
+        margin: 5px;
+    }
+
+  .titulo {
+    height: auto;
+  }
+
+}
+
+@media only screen and (min-width: 321px) and (max-width: 768px) {
+.personaje  {
+        width: 100px;
+        height: 165px;
+    }
+
+  .titulo {
+    height: auto;
+  }
+
+}
+    
+}
+
 
     #tituloDentro img{
         float: left;
@@ -219,7 +247,7 @@
 <body>
     <div id="titulo">
         <div id="tituloDentro">
-            <img src="IMAGENES/logo.png"><div id="fallos">Fallos: <span id="fallosN">0</span></div> <div id="fallos">Aciertos: <span id="aciertos">0</span></div>
+            <div id="fallos">Fallos: <span id="fallosN">0</span></div> <div id="fallos">Aciertos: <span id="aciertos">0</span></div>
         </div>
     </div>
     <div id="contenido">
