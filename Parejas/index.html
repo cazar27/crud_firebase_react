@@ -1,290 +1,32 @@
-<html>
+<!DOCTYPE html>
+<html lang="es">
 <head>
-    <title>Juego Pareja de Cartas</title>
-    <link rel="stylesheet" href="bootstrap.css">
-<style type="text/css">
-    body { 
-        background : white;
-        font-family: Tahoma;
-        color : #666666;
-        margin : 0px 0px 0px 0px;
-        font-size: 0.9em;
-        text-align: center;
-        text-align: left;
-        width: 100%;
-        height: auto;
-        height: 100%;
-        min-width: 1024px;
-    }
-
-    #titulo{
-        background-color: #E1E1E1;
-        width: 100%;
-        overflow: hidden;
-        border: 1px solid #e0e0e0;
-        border-top: 0px;
-        border-left: 0px;
-        border-right: 0px;
-        background-color: rgba(0,0,0,.03);
-        box-shadow: 0 1px 6px rgba(0,0,0,.08);
-        min-height: 5%;
-        text-align: left;
-    }
-
-    #tituloDentro{
-        width: 100%;
-        height: auto;
-        position: relative;
-        padding:15px;
-    }
-
-    #contenido{
-        width: 100%;
-        overflow: hidden;
-        border: 1px solid #e0e0e0;
-        border-top: 0px;
-        border-left: 0px;
-        border-right: 0px;
-        border-bottom: 0px;
-    }
-
-    #contenidoDentro{
-        
-        width: 100%;
-        height: auto;
-        position: relative;
-        padding: 20px;
-        font-size: 2em;
-        margin: 0 auto;
-    }
-
-    .personaje{
-        width: 155px;
-        height: 190px;
-        background-color: #E1E1E1;
-        float: left;
-        margin: 5px;
-    }
-
-@media only screen and (max-width: 320px) {
-.personaje  {
-        width: 52px;
-        height: 80px;
-        background-color: #E1E1E1;
-        float: left;
-        margin: 5px;
-    }
-
-  .titulo {
-    height: auto;
-  }
-
-}
-
-@media only screen and (min-width: 321px) and (max-width: 768px) {
-.personaje  {
-        width: 100px;
-        height: 165px;
-    }
-
-  .titulo {
-    height: auto;
-  }
-
-}
-    
-}
-
-
-    #tituloDentro img{
-        float: left;
-    }
-    #fallos{
-        float: left;
-        border: 1px solid #e0e0e0;
-        background-color: white;
-        font-size: 2em;
-        padding: 6px;
-        margin-top: 30px;
-        margin-left: 20px;
-        background: #f7f7f7; /* Old browsers */
-        background: -moz-linear-gradient(top,  #f7f7f7 0%, #ffffff 100%); /* FF3.6+ */
-        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f7f7f7), color-stop(100%,#ffffff)); /* Chrome,Safari4+ */
-        background: -webkit-linear-gradient(top,  #f7f7f7 0%,#ffffff 100%); /* Chrome10+,Safari5.1+ */
-        background: -o-linear-gradient(top,  #f7f7f7 0%,#ffffff 100%); /* Opera 11.10+ */
-        background: -ms-linear-gradient(top,  #f7f7f7 0%,#ffffff 100%); /* IE10+ */
-        background: linear-gradient(to bottom,  #f7f7f7 0%,#ffffff 100%); /* W3C */
-        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f7f7f7', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
-
-    }
-</style>
-
-<script type="text/javascript" src="jquery-1.9.1.js"></script>
-<script src="http://code.jquery.com/jquery-migrate-1.1.1.js"></script>
-<script type="text/javascript">
-
-        /*
-            En caso de añadir una imagen al juego solo es necesario añadir un td en HTML nuevo y la imagen en arrayImagenes
-        */
-
-        var contadorPruebas=0;
-        var anterior=null;
-        var imagenElegida;
-        var contadorFallos = 0;
-        var contadorAciertos =0;
-        var arrayImagenes = ["IMAGENES/android1.png", "IMAGENES/android2.png", "IMAGENES/android9.png", "IMAGENES/android3.png", "IMAGENES/android4.png", "IMAGENES/android5.png", "IMAGENES/android6.png", "IMAGENES/android7.png", "IMAGENES/android8.png"];
-        var cantidadImagenes = arrayImagenes.length;
-        var arrayPosiciones = new Array(cantidadImagenes);
-        $(document).ready(function(){
-            //Crea las posiciones de la array
-                var contadorPosiciones =0;
-                while(contadorPosiciones<cantidadImagenes*2){
-                    var imagenPonemos = Math.floor((Math.random()*cantidadImagenes));
-                    var contadorPosicionesRepetidas =0;
-                    for (var x=0; x<contadorPosiciones; x++){
-                        if (arrayPosiciones[x]==imagenPonemos) contadorPosicionesRepetidas++;
-                    }
-                    if (contadorPosicionesRepetidas<2){
-                        arrayPosiciones[contadorPosiciones] = imagenPonemos;
-                        contadorPosiciones++;
-                    }
-                }
-
-            //Recogemos cuando clique en un td
-            $("td").click(function(){
-                contadorPruebas++;
-                //Recogemos la casilla
-                var casilla = $(this).attr("id");
-                if (contadorPruebas>1){
-                    imagenElegida = arrayPosiciones[casilla];
-                    $("#"+casilla).animate({
-                        width: "toggle",
-                        opacity: "toggle"
-                    }, 300);
-                    $("#"+casilla).animate({
-                        width: "toggle",
-                        opacity: "toggle"
-                    }, 300);
-                    window.setTimeout(function(){
-                        $("#"+casilla).css("background", "url("+arrayImagenes[imagenElegida]+")");
-                    },300);
-                    if (arrayPosiciones[casilla]!=arrayPosiciones[anterior]){
-                        if (contadorFallos==12) {
-                            perder();
-                        }
-                        contadorFallos++;
-                        $("#fallosN").html(contadorFallos);
-                        window.setTimeout(function(){
-                            $("#"+casilla).animate({
-                            width: "toggle",
-                            opacity: "toggle"
-                            }, 300);
-                            $("#"+casilla).animate({
-                                width: "toggle",
-                                opacity: "toggle"
-                            }, 300);
-                            $("#"+anterior).animate({
-                                width: "toggle",
-                                opacity: "toggle"
-                            }, 300);
-                            $("#"+anterior).animate({
-                                width: "toggle",
-                                opacity: "toggle"
-                            }, 300);
-                            window.setTimeout(function(){
-                                $("#"+casilla).css("background", "");
-                                $("#"+anterior).css("background", "");
-                            },300);
-                        },1000);
-                    }
-                    else{ 
-
-                        contadorAciertos++;
-                        if (contadorAciertos==9) {
-                            ganar(contadorAciertos,contadorFallos);
-                        }
-                        $("#aciertos").html(contadorAciertos);
-                    }
-                    contadorPruebas = 0;
-
-                }else{
-                    anterior = casilla;
-                    imagenElegida = arrayPosiciones[casilla];
-                    $("#"+casilla).animate({
-                        width: "toggle",
-                        opacity: "toggle"
-                    }, 300);
-                    $("#"+casilla).animate({
-                        width: "toggle",
-                        opacity: "toggle"
-                    }, 300);
-                    window.setTimeout(function(){
-                        $("#"+casilla).css("background", "url("+arrayImagenes[imagenElegida]+")");
-                    },300);
-                    contadorPruebas++;
-                }
-            })
-        });
-</script>
-<script type="text/javascript">
-    function ganar(contA,ContF){
-        var puntuacion = contA*11;
-        if (ContF>3) {
-            puntuacion = puntuacion-(contF*5);
-        }
-        alert("Has ganado!!XD Tu puntuacion es:"+puntuacion);
-        document.location.href = document.location.href;
-
-    }
-    function perder(){
-        alert("Has perdido!!X[");
-        document.location.href = document.location.href;
-
-    }
-</script>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Juego de encontrar parejas</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div id="titulo">
-        <div id="tituloDentro">
-            <div id="fallos">Fallos: <span id="fallosN">0</span></div> <div id="fallos">Aciertos: <span id="aciertos">0</span></div>
-        </div>
+  <div class="container">
+    <h1>Juego de encontrar parejas</h1>
+    <div id="game-info">
+      <p>Turnos: <span id="turns">0</span></p>
+      <p>Aciertos: <span id="matches">0</span></p>
+      <p>Fallos: <span id="mistakes">0</span></p>
+      <p>Puntuacion: <span id="mistakes">0</span></p>
+      <p>Tiempo: <span id="timer">0</span> segundos</p>
     </div>
-    <div id="contenido">
-        <div id="contenidoDentro">
-            <table>
-                <tr>
-                    <td class="personaje" id="0"></td>
-                    <td class="personaje" id="1"></td>
-                    <td class="personaje" id="2"></td>
-                </tr>
-                <tr>
-                    <td class="personaje" id="3"></td>
-                    <td class="personaje" id="4"></td>
-                    <td class="personaje" id="5"></td>
-                </tr>
-                <tr>
-                    <td class="personaje" id="6"></td>
-                    <td class="personaje" id="7"></td>
-                    <td class="personaje" id="8"></td>
-                </tr>
-                <tr>
-                    <td class="personaje" id="9"></td>
-                    <td class="personaje" id="10"></td>
-                    <td class="personaje" id="11"></td>
-                </tr>
-                <tr>
-                    <td class="personaje" id="12"></td>
-                    <td class="personaje" id="13"></td>
-                    <td class="personaje" id="14"></td>
-                </tr>
-                <tr>    
-                    <td class="personaje" id="15"></td>
-                    <td class="personaje" id="16"></td>
-                    <td class="personaje" id="17"></td>
-                </tr>
-            </table>
-        </div>
+    <div id="game-panel">
+      <!-- Aquí se generará el panel de juego -->
     </div>
+    <div id="game-group-btn">
+      <button class="btn btn-success" id="start">Comenzar Juego</button>
+      <button class="btn btn-primary" id="pause">Pausar Juego</button>
+      <button class="btn btn-warning" id="restart">Restaurar Juego</button>
+    </div>
+  </div>
+
+  <script src="js/script.js"></script>
 </body>
-<html>
+</html>
