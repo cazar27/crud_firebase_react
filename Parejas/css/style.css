@@ -58,11 +58,12 @@ h1 {
   padding: 10px;
   width: 100%;
   height: 100%;
-  min-height: 76px;
+  min-height: 90px;
   transform-style: preserve-3d;
   transition: all .2s ease-in;
   transform: rotateY(180deg);
   background-color: #cfcfcf;
+  background-image: linear-gradient(to right, #0058e1, #2c70eb, #4a87f3, #669efa, #83b4ff);
   position: absolute;
   width: 100%;
   height: 100%;
@@ -71,7 +72,28 @@ h1 {
 
 .flipped .card-inner {
   transform: rotateY(0);
+  background-image: none;
   background-color: #ffffff;
+}
+
+.flipped.error .card-inner{
+  animation: cangeError .6s;
+  animation-iteration-count: 1;
+}
+
+.flipped.success .card-inner {
+  animation: cangeSuccess 1s;
+  animation-iteration-count: 1;
+}
+
+@keyframes cangeError {
+  from {background-color: #ff000049;}
+  to {background-color:  #ffffff;}
+}
+
+@keyframes cangeSuccess {
+  from {background-color: #22aa003d;}
+  to {background-color:  #ffffff;}
 }
 
 .card-inner span {
@@ -87,13 +109,26 @@ h1 {
 @media (max-width: 768px) {
   /* Estilos para dispositivos móviles */
   .card {
-    flex: 0 0 calc(50% - 20px); /* Crea 2 columnas con margen entre ellas */
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
+    flex: 0 0 calc(25% - 20px);
+    min-height: 68px;
+  }
+  .card-inner {
+    font-size: 2rem;
+    min-height: 68px;
   }
 }
 
 @media (max-width: 480px) {
   /* Estilos para dispositivos móviles más pequeños */
   .card {
-    flex: 0 0 calc(100% - 20px); /* Crea 1 columna sin margen */
+    flex: 0 0 calc(25% - 20px);
+    min-height: 50px;
+  }
+  .card-inner {
+    font-size: 1.2rem;
+    min-height: 50px;
   }
 }

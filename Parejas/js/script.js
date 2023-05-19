@@ -1,23 +1,20 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // const cards = [
-  //   "🐶",
-  //   "🐱",
-  //   "🐭",
+  const cards = [
+    "🐶",
+    "🐱",
+    "🐭",
+    "🐹",
+    "🐰",
+    "🦊",
+    "🐻",
+    "🐼",
+    "🐯",
+    "🦁",
+    "🐷",
+    "🐸"
+  ];
 
-  //   "🐹",
-  //   "🐰",
-  //   "🦊",
-
-  //   "🐻",
-  //   "🐼",
-  //   "🐯",
-
-  //   "🦁",
-  //   "🐷",
-  //   "🐸"
-  // ];
-
-  const cards = ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊"];
+  // const cards = ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊"];
 
   const gamePanel = document.getElementById("game-panel");
 
@@ -142,8 +139,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (card1.textContent === card2.textContent) {
           // Las cartas coinciden
-          // si las cartas coinciden a sus card correspondientes se le añade una clase
           cardsMatched.push(card1, card2);
+          setTimeout(() => {
+            card1.classList.add("success");
+            card2.classList.add("success");
+          }, 300);
+          setTimeout(() => {
+            card1.classList.remove("success");
+            card2.classList.remove("success");
+          }, 1000);
           matches++;
           matchesDisplay.textContent = matches;
 
@@ -163,8 +167,14 @@ document.addEventListener("DOMContentLoaded", function () {
           // Las cartas no coinciden, tienes un fallo y a esas cartas hay que darles la vuelta
           mistakes++;
           mistakesDisplay.textContent = mistakes;
+          setTimeout(() => {
+            card1.classList.add("error");
+            card2.classList.add("error");
+          }, 100);
 
           setTimeout(function () {
+            card1.classList.remove("error");
+            card2.classList.remove("error");
             card1.classList.remove("flipped");
             card2.classList.remove("flipped");
           }, 1000);
@@ -199,12 +209,12 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function restoreGame() {
-     closeModal();
-     resetGame();
-     startGame();
-      btnStart.disabled = true;
-      btnPausePlay.disabled = false;
-      btnRestart.disabled = false;
+    closeModal();
+    resetGame();
+    startGame();
+    btnStart.disabled = true;
+    btnPausePlay.disabled = false;
+    btnRestart.disabled = false;
   }
 
   // Función para reiniciar la partida
