@@ -1,20 +1,21 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const cards = [
-    "🐶",
-    "🐱",
-    "🐭",
-    "🐹",
-    "🐰",
-    "🦊",
-    "🐻",
-    "🐼",
-    "🐯",
-    "🦁",
-    "🐷",
-    "🐸"
-  ];
+  // const cards = [
+  //   "🐶",
+  //   "🐱",
+  //   "🐭",
+  //   "🐹",
+  //   "🐰",
+  //   "🦊",
+  //   "🐻",
+  //   "🐼",
+  //   "🐯",
+  //   "🦁",
+  //   "🐷",
+  //   "🐸"
+  // ];
 
   // const cards = ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊"];
+  const cards = ["🐨", "🐮", "🐵", "🦊", "🐧", "🐰"];
 
   const gamePanel = document.getElementById("game-panel");
 
@@ -29,6 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const btnPausePlay = document.getElementById("pause");
 
   const myModal = document.getElementById("myModal");
+  const btnSave = document.getElementById("save_register");
 
   const closeBtn = document.getElementById("close_modal_header");
   const close = document.getElementById("close_modal");
@@ -44,6 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
   closeBtn.addEventListener("click", closeModal);
   close.addEventListener("click", closeModal);
   restartGame.addEventListener("click", restoreGame);
+  btnSave.addEventListener("click", saveScore);
 
   // Variable para controlar si el juego está pausado o no
   let isPaused = false;
@@ -61,12 +64,12 @@ document.addEventListener("DOMContentLoaded", function () {
   function togglePause() {
     if (isPaused) {
       startTimer();
-      btnPausePlay.textContent = "Pausar Juego";
+      btnPausePlay.textContent = "Pausar";
       isPaused = false;
     } else {
       pause();
       isPaused = true;
-      btnPausePlay.textContent = "Continuar Juego";
+      btnPausePlay.textContent = "Continuar";
     }
   }
 
@@ -77,6 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   generateGame();
+  showRanking();
 
   function generateGame() {
     // Duplicar el arreglo de cartas
@@ -258,5 +262,85 @@ document.addEventListener("DOMContentLoaded", function () {
   // Función para agregar un cero a la izquierda si el número es menor a 10
   function formatTime(time) {
     return time < 10 ? "0" + time : time;
+  }
+
+  // Función para guardar el registro utilizando AJAX
+  function saveScore() {
+    const playerName = document.getElementById("name").value; // Obtener el nombre del jugador
+    const score = calcStore(); // Obtener la puntuación
+
+    // Crear una instancia de objeto XMLHttpRequest
+    const xhr = new XMLHttpRequest();
+    const url = "./php/save_score.php"; // Ruta al archivo PHP
+
+    // Definir el método HTTP POST y la URL del archivo PHP
+    xhr.open("POST", url, true);
+
+    // Establecer el encabezado de la solicitud
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    if (playerName != "") {
+      // Enviar la solicitud con los datos del jugador y la puntuación
+      xhr.send(`name=${playerName}&score=${score}`);
+    }
+
+    // Manejar la respuesta del servidor
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        const response = JSON.parse(xhr.responseText);
+        if (response.success) {
+          // Recargar el ranking
+          showRanking();
+        } else {
+          console.error(response.message);
+        }
+      }
+    };
+  }
+
+  // Mostrar el ranking en el HTML
+  function showRanking() {
+    const xhr = new XMLHttpRequest();
+    const rankingElement = document.getElementById("ranking");
+    rankingElement.innerHTML = ""; // Limpiar el contenido del ranking
+
+    // Establecer la función de devolución de llamada al recibir una respuesta
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        // Convertir la respuesta JSON en un objeto JavaScript
+        const response = JSON.parse(xhr.responseText);
+
+        // Verificar si la operación fue exitosa
+        if (response) {
+          // Obtener los registros del objeto de respuesta
+          records = response;
+          if (records.length === 0) {
+            rankingElement.innerHTML = "<p>No hay registros disponibles.</p>";
+          } else {
+            const rankingList = document.createElement("ul");
+            rankingList.classList.add("list-group");
+
+            records.forEach((record, index) => {
+              const listItem = document.createElement("li");
+              listItem.classList.add("list-group-item");
+              listItem.innerHTML = `<span class="badge bg-primary">${
+                index + 1
+              }</span> ${record.name} - ${record.score}`;
+              rankingList.appendChild(listItem);
+            });
+
+            rankingElement.appendChild(rankingList);
+          }
+        } else {
+          // Mostrar el mensaje de error en la consola
+          console.error(response.message);
+        }
+      }
+    };
+    const url = "./php/read_score.php"; // Ruta al archivo PHP
+    // Configurar la solicitud AJAX
+    xhr.open("GET", url, true);
+    // Enviar la solicitud
+    xhr.send();
   }
 });

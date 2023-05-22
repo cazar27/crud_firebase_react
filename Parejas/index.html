@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Juego de memorizar parejas</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -14,12 +14,19 @@
         <!-- Encabezado de la modal -->
         <div class="modal-header">
           <h5 class="modal-title">Enhorabuena!</h5>
-          <button type="button" id="close_modal_header" class="close">&times;</button>
+          <button type="button" id="close_modal_header" class="btn-close">&times;</button>
         </div>
         
         <!-- Cuerpo de la modal -->
         <div class="modal-body">
+          <p>Dinos tu nombre para añadirlo al registro</p>
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control rounded-3" id="name" placeholder="Nombre">
+            <label for="name">Nombre:</label>
+          </div>
+          <p>Si le da a guardara aceptara el consentimiento del manejo de los datos</p>
           <p id="text-modal">Contenido de la modal.</p>
+          <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" id="save_register" type="submit">Guardar registro</button>
         </div>
         
         <!-- Pie de página de la modal -->
@@ -41,14 +48,17 @@
       <p>Tiempo: <span id="timer">00:00</span></p>
     </div>
     <div id="game-group-btn">
-      <button class="btn btn-success" id="start">Comenzar Juego</button>
-      <button class="btn btn-primary" id="pause" disabled>Pausar Juego</button>
-      <button class="btn btn-warning" id="restart" disabled>Finalizar Juego</button>
+      <button class="btn btn-success" id="start">Comenzar</button>
+      <button class="btn btn-primary" id="pause" disabled>Pausar</button>
+      <button class="btn btn-warning" id="restart" disabled>Finalizar</button>
     </div>
     <div id="game-panel">
       <!-- Aquí se generará el panel de juego -->
     </div>
- 
+    <div>
+      <h1>Puntuaciones del top 10</h1>
+    </div>
+    <div id="ranking"></div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js" integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ" crossorigin="anonymous"></script>
