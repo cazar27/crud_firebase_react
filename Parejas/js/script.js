@@ -1,21 +1,54 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // const cards = [
-  //   "🐶",
-  //   "🐱",
-  //   "🐭",
-  //   "🐹",
-  //   "🐰",
-  //   "🦊",
-  //   "🐻",
-  //   "🐼",
-  //   "🐯",
-  //   "🦁",
-  //   "🐷",
-  //   "🐸"
-  // ];
+  const cards = [
+    "🐶",
+    "🐱",
+    "🐭",
+    "🐹",
+    "🐰",
+    "🦊",
+    "🐻",
+    "🐼",
+    "🐯",
+    "🦁",
+    "🐷",
+    "🐸"
+  ];
+  // "🐶",
+  // "🐱",
+  // "🐭",
+  // "🐹",
+  // "🐰",
+  // "🦊",
+  // "🐻",
+  // "🐼",
+  // "🐯",
+  // "🦁",
+  // "🐷",
+  // "🐸",
+  // "🐨",
+  // "🐮",
+  // "🐵",
+  // "🐔"
 
-  // const cards = ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊"];
-  const cards = ["🐨", "🐮", "🐵", "🦊", "🐧", "🐰"];
+  // "🐶",
+  // "🐱",
+  // "🐭",
+  // "🐹",
+  // "🐰",
+  // "🦊",
+  // "🐻",
+  // "🐼",
+  // "🐯",
+  // "🦁",
+  // "🐷",
+  // "🐸",
+
+  // "🐶",
+  // "🐱",
+  // "🐭",
+  // "🐹",
+  // "🐰",
+  // "🦊",
 
   const gamePanel = document.getElementById("game-panel");
 
@@ -32,8 +65,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const myModal = document.getElementById("myModal");
   const btnSave = document.getElementById("save_register");
 
-  const closeBtn = document.getElementById("close_modal_header");
-  const close = document.getElementById("close_modal");
+  const closeBtn = document.getElementById("close_btn");
   const restartGame = document.getElementById("restore_game");
 
   const maxturns = 20;
@@ -44,7 +76,6 @@ document.addEventListener("DOMContentLoaded", function () {
   btnPausePlay.addEventListener("click", togglePause);
 
   closeBtn.addEventListener("click", closeModal);
-  close.addEventListener("click", closeModal);
   restartGame.addEventListener("click", restoreGame);
   btnSave.addEventListener("click", saveScore);
 
@@ -80,7 +111,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   generateGame();
-  showRanking();
+  getRanking();
 
   function generateGame() {
     // Duplicar el arreglo de cartas
@@ -290,50 +321,32 @@ document.addEventListener("DOMContentLoaded", function () {
         const response = JSON.parse(xhr.responseText);
         if (response.success) {
           // Recargar el ranking
-          showRanking();
+          getRanking();
         } else {
           console.error(response.message);
         }
       }
     };
+    closeModal();
   }
-
-  // Mostrar el ranking en el HTML
-  function showRanking() {
+  // Obtener ranking del fichero PHP
+  function getRanking() {
     const xhr = new XMLHttpRequest();
-    const rankingElement = document.getElementById("ranking");
-    rankingElement.innerHTML = ""; // Limpiar el contenido del ranking
-
     // Establecer la función de devolución de llamada al recibir una respuesta
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4 && xhr.status === 200) {
         // Convertir la respuesta JSON en un objeto JavaScript
         const response = JSON.parse(xhr.responseText);
-
         // Verificar si la operación fue exitosa
-        if (response) {
-          // Obtener los registros del objeto de respuesta
-          records = response;
-          if (records.length === 0) {
-            rankingElement.innerHTML = "<p>No hay registros disponibles.</p>";
-          } else {
-            const rankingList = document.createElement("ul");
-            rankingList.classList.add("list-group");
-
-            records.forEach((record, index) => {
-              const listItem = document.createElement("li");
-              listItem.classList.add("list-group-item");
-              listItem.innerHTML = `<span class="badge bg-primary">${
-                index + 1
-              }</span> ${record.name} - ${record.score}`;
-              rankingList.appendChild(listItem);
-            });
-
-            rankingElement.appendChild(rankingList);
-          }
-        } else {
+        if (response.message) {
           // Mostrar el mensaje de error en la consola
           console.error(response.message);
+        } else {
+          // Obtener los registros del objeto de respuesta
+          const records = response;
+          console.log(records);
+          showRanking(records);
+          return records;
         }
       }
     };
@@ -342,5 +355,31 @@ document.addEventListener("DOMContentLoaded", function () {
     xhr.open("GET", url, true);
     // Enviar la solicitud
     xhr.send();
+  }
+
+  // Mostrar el ranking en el HTML
+  function showRanking(records) {
+    const rankingElement = document.getElementById("ranking");
+    rankingElement.innerHTML = ""; // Limpiar el contenido del ranking
+
+    if (records.length === 0) {
+      rankingElement.innerHTML = "<p>No hay registros disponibles.</p>";
+    } else {
+      const rankingList = document.createElement("ul");
+      rankingList.classList.add("list-group");
+
+      records.forEach((record, index) => {
+        if (index < 10) {
+          const listItem = document.createElement("li");
+          listItem.classList.add("list-group-item");
+          listItem.innerHTML = `<p class="name">
+          <span class="badge bg-primary">${index + 1}</span>${
+            record.name
+          }</p><p class="score">${record.score}</p>`;
+          rankingList.appendChild(listItem);
+        }
+      });
+      rankingElement.appendChild(rankingList);
+    }
   }
 });

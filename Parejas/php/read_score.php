@@ -21,6 +21,8 @@ function readScoresFile($filename) {
 
         // Cerrar el archivo
         fclose($file);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error al abrir el archivo.']);
     }
 
     return $scores;

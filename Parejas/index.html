@@ -14,25 +14,24 @@
         <!-- Encabezado de la modal -->
         <div class="modal-header">
           <h5 class="modal-title">Enhorabuena!</h5>
-          <button type="button" id="close_modal_header" class="btn-close">&times;</button>
+          <button type="button" id="close_btn" class="btn-close">&times;</button>
         </div>
         
         <!-- Cuerpo de la modal -->
         <div class="modal-body">
           <p>Dinos tu nombre para añadirlo al registro</p>
           <div class="form-floating mb-3">
-            <input type="text" class="form-control rounded-3" id="name" placeholder="Nombre">
+            <input type="text" class="form-control rounded-3" id="name" maxlength="25" placeholder="Nombre">
             <label for="name">Nombre:</label>
           </div>
+          <p id="text-modal">Felicidades.</p>
           <p>Si le da a guardara aceptara el consentimiento del manejo de los datos</p>
-          <p id="text-modal">Contenido de la modal.</p>
-          <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" id="save_register" type="submit">Guardar registro</button>
         </div>
         
         <!-- Pie de página de la modal -->
         <div class="modal-footer">
-          <button type="button" id="close_modal" class="btn btn-secondary">Cerrar</button>
-          <button class="btn btn-primary" id="restore_game">Jugar de nuevo</button>
+          <button class="mb-2 btn rounded-3 btn-primary" id="save_register" type="submit">Guardar registro</button>
+          <button class="mb-2 btn rounded-3 btn-primary" id="restore_game">Jugar de nuevo</button>
         </div>
       </div>
     </div>
